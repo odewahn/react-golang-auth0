@@ -1,6 +1,6 @@
 import React from 'react';
 import {Textfield, Button} from 'react-mdl';
-import {setUserFieldValue} from '../state/user'
+import {setUserFieldValue, login} from '../state/user'
 
 function postCreds(c) {
   console.log(c)
@@ -11,7 +11,8 @@ export const LoginForm = React.createClass({
     this.props.dispatch(setUserFieldValue(e.target.name, e.target.value))
   },
   handleSubmit: function() {
-    postCreds(this.props.User.toJS())
+    this.props.dispatch(login(this.props.User.toJS()))
+    //postCreds(this.props.User.toJS())
   },
   render: function() {
     return (

@@ -40,3 +40,16 @@ export function setUserFieldValue(key, value) {
     value: value
   })
 }
+
+// Deletes the container record at the given index
+export function login(creds) {
+  console.log(creds)
+  return dispatch => {
+    fetch("http://localhost:3000/login",
+      {method: 'POST', body: JSON.stringify(creds)})
+      .then( response => response.json())
+      .then( json => {
+        console.log("data is posted", json)
+      })
+  }
+}

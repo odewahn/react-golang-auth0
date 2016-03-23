@@ -2,12 +2,13 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/odewahn/react-mdl-boilerplate/backend/handler"
+	"github.com/odewahn/react-golang-auth/backend/handler"
 )
 
 // Login captures the data posted to the /login route
@@ -17,7 +18,9 @@ func Login(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 	var params map[string]string
 	json.Unmarshal(dat, &params)
 
-	log.Println("login from", params["username"], "with password", params["password"])
+	log.Println("login from", params["Username"], "with password", params["Password"])
+	fmt.Fprintf(w, "{\"token\": \""+env.Secret+"\"}")
+
 	return nil
 }
 
