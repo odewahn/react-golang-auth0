@@ -44,9 +44,15 @@ export function setUserFieldValue(key, value) {
 // Deletes the container record at the given index
 export function login(creds) {
   console.log(creds)
+  var request = {
+    method: 'POST',
+    body: JSON.stringify(creds),
+    headers: {
+      "x-authentication": "myLittleSecret"
+    }
+  }
   return dispatch => {
-    fetch("http://localhost:3000/login",
-      {method: 'POST', body: JSON.stringify(creds)})
+    fetch("http://localhost:3000/login", request)
       .then( response => response.json())
       .then( json => {
         console.log("data is posted", json)
