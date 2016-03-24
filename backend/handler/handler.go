@@ -44,12 +44,12 @@ type Handler struct {
 }
 
 // ServeHTTP allows our Handler type to satisfy http.Handler.
+// See:
+//    https://annevankesteren.nl/2015/02/same-origin-policy
+//    http://stackoverflow.com/questions/22972066/how-to-handle-preflight-cors-requests-on-a-go-server
 func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	log.Println("ahoy there!")
-	// Stop here if its Preflighted OPTIONS request
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Access-Control-Allow-Headers", "x-authentication")
 
 	err := h.H(h.Env, w, r)

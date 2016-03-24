@@ -2,17 +2,12 @@ import React from 'react';
 import {Textfield, Button} from 'react-mdl';
 import {setUserFieldValue, login} from '../state/user'
 
-function postCreds(c) {
-  console.log(c)
-}
-
 export const LoginForm = React.createClass({
   setField: function(e) {
     this.props.dispatch(setUserFieldValue(e.target.name, e.target.value))
   },
   handleSubmit: function() {
     this.props.dispatch(login(this.props.User.toJS()))
-    //postCreds(this.props.User.toJS())
   },
   render: function() {
     return (

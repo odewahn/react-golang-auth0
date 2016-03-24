@@ -18,7 +18,10 @@ func Login(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 	var params map[string]string
 	json.Unmarshal(dat, &params)
 
+	secret := r.Header.Get("x-authentication")
+
 	log.Println("login from", params["Username"], "with password", params["Password"])
+	log.Println("secret from the header is", secret)
 	fmt.Fprintf(w, "{\"token\": \""+env.Secret+"\"}\n")
 
 	return nil
@@ -34,7 +37,7 @@ func main() {
 
 	// Test this with
 	//    curl -v -X POST -d "{\"username\":\"odewahn\", \"password\":\"password\"}" --header "X-Authentication: eddieTheYeti" localhost:3000/login
-	r.Handle("/login", handler.Handler{env, Login}).Methods("POST")
+	r.Handle("/login", handler.Handler{env, Login}).Methods("POST", "OPTIONS")
 
 	port := "3001" // this is the gin port, but the app port is exposed at 3000
 	http.ListenAndServe(":"+port, r)
