@@ -11,6 +11,7 @@ const main = React.createClass({
           <Navigation>
             <Link to="login" href=""><Icon style={{verticalAlign:'middle'}}  name="settings"/> Login</Link>
           </Navigation>
+          {this.props.User.get("Email")}
         </Header>
         <Content className="mdl-color-text--grey-600">
           <Grid>

@@ -24,6 +24,8 @@ export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     case "setUserFieldValue":
       return state.set(action.key, action.value)
+    case "setUserCredentials":
+      return state.merge(action.credentials)
   }
   return state;
 }
@@ -56,6 +58,7 @@ export function login(creds) {
       .then( response => response.json())
       .then( json => {
         console.log("data is posted", json)
+        dispatch({type:"setUserCredentials", credentials: json})
       })
   }
 }
