@@ -4,12 +4,37 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 	"github.com/odewahn/react-golang-auth/backend/handler"
 )
+
+// Creds holds the credentials we send back
+type Creds struct {
+	Status      string
+	APIKey      string
+	AccountType string
+	Email       string
+}
+
+// GetCredentials determines if the username and password is valid
+// This is where logic would go to validate and return account info
+func GetCredentials(env *handler.Env, username, password string) Creds {
+	credentials := Creds{
+		Status:      "UNAUTHORIZED",
+		APIKey:      "",
+		AccountType: "",
+		Email:       "",
+	}
+	if (username == "admin") && (password == "admin") {
+		credentials.Status = "OK"
+		credentials.APIKey = "12345"
+		credentials.AccountType = "admin"
+		credentials.Email = "admin@example.com"
+	}
+	return credentials
+}
 
 // Login captures the data posted to the /login route
 func Login(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
@@ -18,11 +43,12 @@ func Login(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 	var params map[string]string
 	json.Unmarshal(dat, &params)
 
-	secret := r.Header.Get("x-authentication")
+	credentials := GetCredentials(env, params["Username"], params["Password"])
 
-	log.Println("login from", params["Username"], "with password", params["Password"])
-	log.Println("secret from the header is", secret)
-	fmt.Fprintf(w, "{\"token\": \""+env.Secret+"\"}\n")
+	//secret := r.Header.Get("x-authentication")
+
+	out, _ := json.MarshalIndent(&credentials, "", "  ")
+	fmt.Fprintf(w, string(out))
 
 	return nil
 }

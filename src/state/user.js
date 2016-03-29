@@ -7,12 +7,12 @@ import {fromJS, Map} from 'immutable'
 ||  Define the state tree
 *********************************************************************/
 export const INITIAL_STATE = fromJS({
-  ID: "",
   Username: "",
   Password: "",
-  Email: "",
-  AuthToken: "",
-  IsLoggedIn: false
+  IsLoggedIn: false,
+  Token: "",
+  AccountType: "",
+  Email: ""
 })
 
 const fetchProjectMetadataURL = 'http://localhost:3000/project'
@@ -48,7 +48,7 @@ export function login(creds) {
     method: 'POST',
     body: JSON.stringify(creds),
     headers: {
-      "x-authentication": "myLittleSecret"
+      "x-authentication": "my little friend"
     }
   }
   return dispatch => {

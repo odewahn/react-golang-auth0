@@ -17,3 +17,12 @@ I set it up to server as a micro-lab for working with various autentication opti
 * `npm run frontend`
 
 Open your browser to `localhost:8000/dist`
+
+
+# StatusInternalServerError
+
+Here are some notes about creating a self-signed cert to secure the API.
+
+*  https://www.socketloop.com/tutorials/golang-create-x509-certificate-private-and-public-keys
+* https://golang.org/src/crypto/tls/generate_cert.go
+* https://blog.gopheracademy.com/advent-2015/generate-free-tls-certs-with-lego/
