@@ -24,11 +24,21 @@ import NotFound from './components/not-found';
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 const store = createStoreWithMiddleware(reducer);
 
+function requireAuth(nextState, replace) {
+  console.log(nextState)
+  if (true) {
+    replace({
+      pathname: '/login',
+      state: { nextPathname: nextState.location.pathname }
+    })
+  }
+}
+
 // Define all the routes
 const routes = (
   <Route component={AppLayout}>
     <Route name="login" path="/login" component={LoginPage} />
-    <Route name="user_details" path="/user_details" component={UserDetails} />
+    <Route name="user_details" path="/user_details" component={UserDetails} onEnter={requireAuth}/>
     <Route name="default" path="/" component={LoginPage} />
     <Route path="*" component={NotFound} />
   </Route>
