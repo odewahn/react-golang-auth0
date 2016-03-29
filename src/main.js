@@ -14,6 +14,7 @@ import {Provider} from 'react-redux';
 // Import my app-specific pages
 import {AppLayout} from './layout';
 import {LoginPage} from './pageLogin'
+import {UserDetails} from './pageUserDetails'
 import NotFound from './components/not-found';
 
 
@@ -27,6 +28,7 @@ const store = createStoreWithMiddleware(reducer);
 const routes = (
   <Route component={AppLayout}>
     <Route name="login" path="/login" component={LoginPage} />
+    <Route name="user_details" path="/user_details" component={UserDetails} />
     <Route name="default" path="/" component={LoginPage} />
     <Route path="*" component={NotFound} />
   </Route>
