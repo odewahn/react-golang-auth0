@@ -4,15 +4,25 @@ import {Layout, Header, Navigation, Icon, Content, Grid, Cell} from 'react-mdl';
 import {Link} from 'react-router'
 
 const main = React.createClass({
+  logout: function() {
+    this.props.dispatch({type: "logout"})
+  },
   render: function () {
     return (
      <Layout fixedHeader>
         <Header title="React+Redux Auth">
           <Navigation>
-            <Link to="login" href=""><Icon style={{verticalAlign:'middle'}}  name="settings"/> Login</Link>
-            <Link to="user_details" href=""><Icon style={{verticalAlign:'middle'}}  name="settings"/> User Details</Link>
+            <Link to="unsecured" href=""><Icon style={{verticalAlign:'middle'}}  name="lock_open"/> Unsecured</Link>
+            <Link to="secured" href=""><Icon style={{verticalAlign:'middle'}}  name="lock"/> Secured</Link>
           </Navigation>
-          {this.props.User.get("Email")}
+          {this.props.User.toJS().IsLoggedIn === true
+              ? <div>
+                  <Link to="user_details" href="">{this.props.User.toJS().Email}</Link>
+                  {'\u0020\u0020'}
+                  <Link to="" href="" onClick={this.logout}>logout</Link>
+                </div>
+              : <Link to="user_details" href="">login</Link>
+          }
         </Header>
         <Content className="mdl-color-text--grey-600">
           <Grid>

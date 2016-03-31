@@ -26,6 +26,8 @@ export default function(state = INITIAL_STATE, action) {
       return state.set(action.key, action.value)
     case "setUserCredentials":
       return state.merge(action.credentials)
+    case "logout":
+      return state.set("IsLoggedIn", false)
   }
   return state;
 }
@@ -45,7 +47,6 @@ export function setUserFieldValue(key, value) {
 
 // Deletes the container record at the given index
 export function login(creds) {
-  console.log(creds)
   var request = {
     method: 'POST',
     body: JSON.stringify(creds),
@@ -57,7 +58,6 @@ export function login(creds) {
     fetch("http://localhost:3000/login", request)
       .then( response => response.json())
       .then( json => {
-        console.log("data is posted", json)
         dispatch({type:"setUserCredentials", credentials: json})
       })
   }

@@ -8,14 +8,13 @@ import {Grid, Cell} from 'react-mdl';
 const main = React.createClass({
   render: function() {
     return (
-      <Grid>
-        <Cell style={{border: "1px solid blue", padding: "10px", borderRadius: "5px"}} col={12}>
-          <h1>This page has profile info and requires a login</h1>
-          Username: {this.props.User.get("Username")} <br/>
-          Email: {this.props.User.get("Email")} <br/>
-          API Key: {this.props.User.get("APIKey")} <br/>
+        <Cell col={12}>
+          <h1>User Profile</h1>
+          This page should always require a login, and has all the info from the API:<br/>
+          <b>Username</b>: {this.props.User.get("Username")} <br/>
+          <b>Email</b>: {this.props.User.get("Email")} <br/>
+          <b>API Key</b>: {this.props.User.get("APIKey")} <br/>
         </Cell>
-      </Grid>
     )
   }
 });

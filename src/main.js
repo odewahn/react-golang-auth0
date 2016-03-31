@@ -14,6 +14,8 @@ import {Provider, connect} from 'react-redux';
 import {AppLayout} from './layout';
 import {LoginPage} from './pageLogin'
 import {UserDetails} from './pageUserDetails'
+import {UnsecuredPage} from './pageUnsecured'
+import {SecuredPage} from './pageSecured'
 import NotFound from './components/not-found';
 
 
@@ -43,9 +45,10 @@ export function requireAuthentication(Component, LoginPage) {
 // Define all the routes
 const routes = (
     <Route component={AppLayout}>
-      <Route name="login" path="/login" component={LoginPage} />
+      <Route name="unsecured" path="/unsecured" component={UnsecuredPage} />
+      <Route name="secured" path="/secured" component={requireAuthentication(SecuredPage, LoginPage)} />
       <Route name="user_details" path="/user_details" component={requireAuthentication(UserDetails, LoginPage)} />
-      <Route name="default" path="/" component={LoginPage} />
+      <Route name="default" path="/" component={UnsecuredPage} />
       <Route path="*" component={NotFound} />
     </Route>
   )
