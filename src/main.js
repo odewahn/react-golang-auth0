@@ -8,8 +8,7 @@ import { Router, Route} from 'react-router'
 import {createStore, applyMiddleware} from 'redux';
 import reducer from './state/index'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux';
-
+import {Provider, connect} from 'react-redux';
 
 // Import my app-specific pages
 import {AppLayout} from './layout';
@@ -19,21 +18,37 @@ import NotFound from './components/not-found';
 
 
 // create a store that has redux-thunk middleware enabled
-// * https://github.com/gaearon/redux-thunk
-// * https://github.com/rackt/redux/issues/291
+//   https://github.com/gaearon/redux-thunk
+//   https://github.com/rackt/redux/issues/291
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 const store = createStoreWithMiddleware(reducer);
 
+// Try to make a higher level component to handle authenticated requests
+export function requireAuthentication(Component, LoginPage) {
+  class AuthenticatedComponent extends React.Component {
+    render() {
+      return (
+        <div>
+            {this.props.User.toJS().IsLoggedIn === true
+                ? <Component {...this.props}/>
+                : <LoginPage {...this.props} />
+            }
+        </div>
+      )
+    }
+  }
+  return connect((state) => state)(AuthenticatedComponent)
+}
+
 // Define all the routes
 const routes = (
-  <Route component={AppLayout}>
-    <Route name="login" path="/login" component={LoginPage} />
-    <Route name="user_details" path="/user_details" component={UserDetails} />
-    <Route name="default" path="/" component={LoginPage} />
-    <Route path="*" component={NotFound} />
-  </Route>
-);
-
+    <Route component={AppLayout}>
+      <Route name="login" path="/login" component={LoginPage} />
+      <Route name="user_details" path="/user_details" component={requireAuthentication(UserDetails, LoginPage)} />
+      <Route name="default" path="/" component={LoginPage} />
+      <Route path="*" component={NotFound} />
+    </Route>
+  )
 
 ReactDOM.render(
   <Provider store={store}>

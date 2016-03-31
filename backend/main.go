@@ -16,6 +16,7 @@ type Creds struct {
 	APIKey      string
 	AccountType string
 	Email       string
+	IsLoggedIn  bool
 }
 
 // GetCredentials determines if the username and password is valid
@@ -26,12 +27,14 @@ func GetCredentials(env *handler.Env, username, password string) Creds {
 		APIKey:      "",
 		AccountType: "",
 		Email:       "",
+		IsLoggedIn:  false,
 	}
 	if (username == "admin") && (password == "admin") {
 		credentials.Status = "OK"
 		credentials.APIKey = "12345"
 		credentials.AccountType = "admin"
 		credentials.Email = "admin@example.com"
+		credentials.IsLoggedIn = true
 	}
 	return credentials
 }
