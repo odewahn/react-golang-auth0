@@ -7,7 +7,7 @@ const main = React.createClass({
   render: function () {
     return (
      <Layout fixedHeader>
-        <Header title="My App">
+        <Header title="React+Redux Auth">
           <Navigation>
             <Link to="login" href=""><Icon style={{verticalAlign:'middle'}}  name="settings"/> Login</Link>
             <Link to="user_details" href=""><Icon style={{verticalAlign:'middle'}}  name="settings"/> User Details</Link>

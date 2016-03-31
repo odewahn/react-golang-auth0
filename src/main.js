@@ -18,16 +18,14 @@ import NotFound from './components/not-found';
 
 
 // create a store that has redux-thunk middleware enabled
-// * https://github.com/gaearon/redux-thunk
-// * https://github.com/rackt/redux/issues/291
+//   https://github.com/gaearon/redux-thunk
+//   https://github.com/rackt/redux/issues/291
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 const store = createStoreWithMiddleware(reducer);
 
 // Try to make a higher level component to handle authenticated requests
 export function requireAuthentication(Component, LoginPage) {
-
   class AuthenticatedComponent extends React.Component {
-
     render() {
       return (
         <div>
@@ -42,7 +40,6 @@ export function requireAuthentication(Component, LoginPage) {
   return connect((state) => state)(AuthenticatedComponent)
 }
 
-
 // Define all the routes
 const routes = (
     <Route component={AppLayout}>
@@ -52,8 +49,6 @@ const routes = (
       <Route path="*" component={NotFound} />
     </Route>
   )
-
-
 
 ReactDOM.render(
   <Provider store={store}>
