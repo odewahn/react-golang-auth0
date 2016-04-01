@@ -1,28 +1,36 @@
-This repo has all the required bullshit boilerplate for a react frontend with a golang backend.  It uses:
+This repo is a demonstration / sketch for a react+redux frontend with a golang API  backend that demonstrates:
 
-* Golang app with Gorilla mux as the backend
+* Use of higher-level components to protect pages in the frontend that require authorization
 * react-mdl for the design
-* Redux and redux-thunk for state management
 * React router to route stuff
+* Redux and redux-thunk for state management
+* Multiple redux reducers using `combineReducers`
+* UI handling for long running API calls
+* [JWT](http://jwt.io/) signing for authenticating API calls
+* Proper handling for CORS in Gorilla mux
+* Setting headers with `fetch` API
 
-I set it up to server as a micro-lab for working with various autentication options.  So, it presents a login form that will post to the backend app on `localhost:3000/login`.  I still need to:
+I set it up to server as a micro-lab for working with various authentication options.  It took me a lot of research to get all the tiny details right (especially the CORS, JWT, and react login stuff), so I thought I'd share it.
 
-* Set an auth token in the frontend that gets passed in the header
-* add TLS support to encrypt it
+This video provides an overview of the app:
+
+
+If there is interest, I'll make another post / video with more detail on how things work.  *So, if you want to see that, star the repo!*
 
 ## To run it
 
+First, you need a working Golang environment (1.5+)
 * Clone the repo
 * `npm install`
 * `npm run frontend`
+* `go get` to download the go packages
 
 Open your browser to `localhost:8000/dist`
 
+## What's Missing
 
-# StatusInternalServerError
+I should also add this stuff
 
-Here are some notes about creating a self-signed cert to secure the API.
-
-*  https://www.socketloop.com/tutorials/golang-create-x509-certificate-private-and-public-keys
-* https://golang.org/src/crypto/tls/generate_cert.go
-* https://blog.gopheracademy.com/advent-2015/generate-free-tls-certs-with-lego/
+* Godeps support
+* Encryption / HTTPS support for the API
+* Encryption for the JWT token
