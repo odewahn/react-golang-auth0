@@ -9,11 +9,13 @@ This repo is a demonstration / sketch for a react+redux frontend with a golang A
 * [JWT](http://jwt.io/) signing for authenticating API calls
 * Proper handling for CORS in Gorilla mux
 * Setting headers with `fetch` API
+* An npm `scripts` based build approach with support for watchify and gin
 
 I set it up to server as a micro-lab for working with various authentication options.  It took me a lot of research to get all the tiny details right (especially the CORS, JWT, and react login stuff), so I thought I'd share it.
 
 This video provides an overview of the app:
 
+[![react+redux frontend / golang backend](https://img.youtube.com/vi/yp7UqOfNTZ4/2.jpg)](https://www.youtube.com/watch?v=https://youtu.be/yp7UqOfNTZ4)
 
 If there is interest, I'll make another post / video with more detail on how things work.  *So, if you want to see that, star the repo!*
 
