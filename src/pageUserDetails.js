@@ -14,6 +14,7 @@ const main = React.createClass({
           <b>Username</b>: {this.props.User.get("Username")} <br/>
           <b>Email</b>: {this.props.User.get("Email")} <br/>
           <b>API Key</b>: {this.props.User.get("APIKey")} <br/>
+          <b>Auth Token</b>: {this.props.User.get("AuthToken")} <br/>
         </Cell>
     )
   }

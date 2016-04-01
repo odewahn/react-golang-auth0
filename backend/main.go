@@ -4,8 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
+	"time"
 
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 	"github.com/odewahn/react-golang-auth/backend/handler"
 )
@@ -16,6 +19,7 @@ type Creds struct {
 	APIKey      string
 	AccountType string
 	Email       string
+	AuthToken   string
 	IsLoggedIn  bool
 }
 
@@ -27,6 +31,7 @@ func GetCredentials(env *handler.Env, username, password string) Creds {
 		APIKey:      "",
 		AccountType: "",
 		Email:       "",
+		AuthToken:   "",
 		IsLoggedIn:  false,
 	}
 	if (username == "admin") && (password == "admin") {
@@ -35,6 +40,18 @@ func GetCredentials(env *handler.Env, username, password string) Creds {
 		credentials.AccountType = "admin"
 		credentials.Email = "admin@example.com"
 		credentials.IsLoggedIn = true
+		// Now create a JWT for user
+		// Create the token
+		token := jwt.New(jwt.SigningMethodHS256)
+		// Set some claims
+		token.Claims["sub"] = username
+		token.Claims["iss"] = "example.com"
+		token.Claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
+		var err error
+		credentials.AuthToken, err = token.SignedString([]byte(env.Secret))
+		if err != nil {
+			log.Println(err)
+		}
 	}
 	return credentials
 }

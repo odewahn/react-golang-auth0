@@ -12,6 +12,7 @@ export const INITIAL_STATE = fromJS({
   IsLoggedIn: false,
   Token: "",
   AccountType: "",
+  AuthToken: "",
   Email: ""
 })
 
@@ -58,6 +59,7 @@ export function login(creds) {
     fetch("http://localhost:3000/login", request)
       .then( response => response.json())
       .then( json => {
+        console.log(json)
         dispatch({type:"setUserCredentials", credentials: json})
       })
   }
