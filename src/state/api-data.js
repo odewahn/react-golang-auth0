@@ -7,27 +7,24 @@ import {fromJS, Map} from 'immutable'
 ||  Define the state tree
 *********************************************************************/
 export const INITIAL_STATE = fromJS({
-  Username: "",
-  Password: "",
-  IsLoggedIn: false,
-  AccountType: "",
-  AuthToken: "",
-  Email: ""
+  Loading: false,
+  Data: []
 })
 
-const fetchProjectMetadataURL = 'http://localhost:3000/project'
+const fetchDataURL = 'http://localhost:3000/data'
 
 /*********************************************************************
 ||  The reducer
 *********************************************************************/
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case "setUserFieldValue":
+    case "setDataFieldValue":
       return state.set(action.key, action.value)
-    case "setUserCredentials":
-      return state.merge(action.credentials)
-    case "logout":
-      return state.set("IsLoggedIn", false)
+    case "setData":
+      return state.set("Data", action.data)
+                  .set("Loading", false)
+    case "setDataLoading":
+      return state.set("Loading", true)
   }
   return state;
 }
@@ -36,30 +33,42 @@ export default function(state = INITIAL_STATE, action) {
 ||  Allowed Actions
 *********************************************************************/
 
+// Convert a structure into a query string
+// http://stackoverflow.com/questions/1714786/querystring-encoding-of-a-javascript-object
+function serialize(obj) {
+  var str = [];
+  for(var p in obj)
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+    }
+  return str.join("&");
+};
+
 // Sets a field value
-export function setUserFieldValue(key, value) {
+export function setDataFieldValue(key, value) {
   return({
-    type: "setUserFieldValue",
+    type: "setDataFieldValue",
     key: key,
     value: value
   })
 }
 
 // Deletes the container record at the given index
-export function login(creds) {
+export function fetchData(key, n) {
   var request = {
-    method: 'POST',
-    body: JSON.stringify(creds),
+    method: 'GET',
     headers: {
-      "x-authentication": "my little friend"
+      "x-authentication": key
     }
   }
   return dispatch => {
-    fetch("http://localhost:3000/login", request)
+    // Set the data loading flag
+    dispatch({type: "setDataLoading"})
+    // Perform the fetch
+    fetch(fetchDataURL + "?" + serialize({N: n}), request)
       .then( response => response.json())
       .then( json => {
-        console.log(json)
-        dispatch({type:"setUserCredentials", credentials: json})
+        dispatch({type:"setData", data: json})
       })
   }
 }

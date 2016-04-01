@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"net/http"
+	"strconv"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -58,9 +60,27 @@ func GetCredentials(env *handler.Env, username, password string) Creds {
 
 // FakeData provides some fake data for testing...
 func FakeData(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
+
+	// Validate the API call
 	secret := r.Header.Get("x-authentication")
 	log.Println("Fake data called with header", secret)
-	data := []int{3, 1, 4, 5, 9, 2, 7}
+
+	// Get the number of elements to return
+	N, err := strconv.Atoi(r.FormValue("N"))
+	if err != nil {
+		N = 10
+	}
+
+	// Create N random integers
+	rand.Seed(42) // Try changing this number!
+	var data []int
+	for i := 0; i < N; i++ {
+		data = append(data, rand.Intn(100))
+	}
+
+	time.Sleep(2 * time.Second) // just for fun, pause a bit
+
+	// return the results
 	out, _ := json.MarshalIndent(&data, "", "  ")
 	fmt.Fprintf(w, string(out))
 	return nil

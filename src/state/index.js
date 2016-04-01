@@ -6,6 +6,7 @@ import {fromJS} from 'immutable'
 
 
 import User from './user'
+import Data from './api-data'
 
 
 /*
@@ -17,5 +18,6 @@ this discussion on stackoverflow for a better explanation:
   -  http://stackoverflow.com/questions/32674767/redux-reducers-initializing-same-state-key
 */
 export default combineReducers({
-  User
+  User,
+  Data
 })
