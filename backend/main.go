@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -23,6 +24,26 @@ type Creds struct {
 	Email       string
 	AuthToken   string
 	IsLoggedIn  bool
+}
+
+func myLookupKey(key string) []byte {
+	return []byte(key)
+}
+
+func hasValidToken(jwtToken, key string) bool {
+	ret := false
+	token, err := jwt.Parse(jwtToken, func(token *jwt.Token) (interface{}, error) {
+		// Don't forget to validate the alg is what you expect:
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+		return myLookupKey(key), nil
+	})
+
+	if err == nil && token.Valid {
+		ret = true
+	}
+	return ret
 }
 
 // GetCredentials determines if the username and password is valid
@@ -61,24 +82,35 @@ func GetCredentials(env *handler.Env, username, password string) Creds {
 // FakeData provides some fake data for testing...
 func FakeData(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 
+	// If this is an OPTION method, then we don't do anything since it's just
+	// validating the preflight info
+	if r.Method == "OPTIONS" {
+		return nil
+	}
+
 	// Validate the API call
 	secret := r.Header.Get("x-authentication")
-	log.Println("Fake data called with header", secret)
+	isValid := hasValidToken(secret, env.Secret)
+	if !isValid {
+		return handler.StatusError{401, errors.New("Invalid authorization token")}
+	}
 
-	// Get the number of elements to return
+	// If we get here, then we've got a valid call.  So, go ahead and
+	// process the request.  In this instance, all we want to do
+	// is pass back a list of integers that is N items long
 	N, err := strconv.Atoi(r.FormValue("N"))
 	if err != nil {
 		N = 10
 	}
 
 	// Create N random integers
-	rand.Seed(42) // Try changing this number!
+	rand.Seed(time.Now().UTC().UnixNano())
 	var data []int
 	for i := 0; i < N; i++ {
 		data = append(data, rand.Intn(100))
 	}
 
-	time.Sleep(2 * time.Second) // just for fun, pause a bit
+	time.Sleep(1 * time.Second) // just for fun, pause a bit
 
 	// return the results
 	out, _ := json.MarshalIndent(&data, "", "  ")

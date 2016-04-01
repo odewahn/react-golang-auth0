@@ -10,7 +10,7 @@ const main = React.createClass({
   render: function() {
     return (
       <div>
-        <Cell style={{border: "1px solid blue", padding: "10px", borderRadius: "5px"}} col={12}>
+        <Cell col={12}>
           <LoginForm {...this.props} />
         </Cell>
       </div>

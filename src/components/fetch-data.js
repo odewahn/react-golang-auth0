@@ -4,7 +4,6 @@ import {setDataFieldValue, fetchData} from '../state/api-data'
 
 export const FetchDataForm = React.createClass({
   handleClick: function() {
-    console.log("they want", this.props.Data.get("N"), "items")
     this.props.dispatch(fetchData(this.props.User.get("AuthToken"), this.props.Data.get("N")))
   },
   setField: function(e) {

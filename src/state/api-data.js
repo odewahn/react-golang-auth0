@@ -8,6 +8,7 @@ import {fromJS, Map} from 'immutable'
 *********************************************************************/
 export const INITIAL_STATE = fromJS({
   Loading: false,
+  N: "10",
   Data: []
 })
 

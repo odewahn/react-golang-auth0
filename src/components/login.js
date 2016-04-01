@@ -1,5 +1,5 @@
 import React from 'react';
-import {Textfield, Button} from 'react-mdl';
+import {Textfield, Button, Cell} from 'react-mdl';
 import {setUserFieldValue, login} from '../state/user'
 
 export const LoginForm = React.createClass({
@@ -11,7 +11,7 @@ export const LoginForm = React.createClass({
   },
   render: function() {
     return (
-      <div>
+      <div style={{border: "1px solid blue", padding: "10px", borderRadius: "5px"}} >
         <Textfield
           label="Username"
           floatingLabel

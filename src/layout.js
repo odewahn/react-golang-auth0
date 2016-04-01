@@ -12,8 +12,8 @@ const main = React.createClass({
      <Layout fixedHeader>
         <Header title="React+Redux Auth">
           <Navigation>
-            <Link to="unsecured" href=""><Icon style={{verticalAlign:'middle'}}  name="lock_open"/> Unsecured</Link>
-            <Link to="secured" href=""><Icon style={{verticalAlign:'middle'}}  name="lock"/> Secured</Link>
+            <Link to="unsecured" href=""><Icon style={{verticalAlign:'middle'}}  name="lock_open"/> Home</Link>
+            <Link to="secured" href=""><Icon style={{verticalAlign:'middle'}}  name="lock"/> Data</Link>
           </Navigation>
           {this.props.User.toJS().IsLoggedIn === true
               ? <div>
