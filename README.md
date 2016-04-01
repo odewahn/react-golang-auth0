@@ -15,7 +15,7 @@ I set it up to server as a micro-lab for working with various authentication opt
 
 This video provides an overview of the app:
 
-[![react+redux frontend / golang backend](https://img.youtube.com/vi/yp7UqOfNTZ4/2.jpg)](https://www.youtube.com/watch?v=https://youtu.be/yp7UqOfNTZ4)
+[![react+redux frontend / golang backend](video-poster.png)](https://youtu.be/yp7UqOfNTZ4)
 
 If there is interest, I'll make another post / video with more detail on how things work.  *So, if you want to see that, star the repo!*
 
