@@ -56,6 +56,16 @@ func GetCredentials(env *handler.Env, username, password string) Creds {
 	return credentials
 }
 
+// FakeData provides some fake data for testing...
+func FakeData(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
+	secret := r.Header.Get("x-authentication")
+	log.Println("Fake data called with header", secret)
+	data := []int{3, 1, 4, 5, 9, 2, 7}
+	out, _ := json.MarshalIndent(&data, "", "  ")
+	fmt.Fprintf(w, string(out))
+	return nil
+}
+
 // Login captures the data posted to the /login route
 func Login(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 	dat, _ := ioutil.ReadAll(r.Body) // Read the body of the POST request
@@ -64,8 +74,6 @@ func Login(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 	json.Unmarshal(dat, &params)
 
 	credentials := GetCredentials(env, params["Username"], params["Password"])
-
-	//secret := r.Header.Get("x-authentication")
 
 	out, _ := json.MarshalIndent(&credentials, "", "  ")
 	fmt.Fprintf(w, string(out))
@@ -84,6 +92,9 @@ func main() {
 	// Test this with
 	//    curl -v -X POST -d "{\"username\":\"odewahn\", \"password\":\"password\"}" --header "X-Authentication: eddieTheYeti" localhost:3000/login
 	r.Handle("/login", handler.Handler{env, Login}).Methods("POST", "OPTIONS")
+
+	//This returns some fake data
+	r.Handle("/data", handler.Handler{env, FakeData}).Methods("GET", "OPTIONS")
 
 	port := "3001" // this is the gin port, but the app port is exposed at 3000
 	http.ListenAndServe(":"+port, r)
