@@ -1,5 +1,6 @@
 This repo is a demonstration / sketch for a react+redux frontend with a golang API  backend that demonstrates:
 
+* How to use Auth0 and react to log in
 * Use of higher-level components to protect pages in the frontend that require authorization
 * react-mdl for the design
 * React router to route stuff
