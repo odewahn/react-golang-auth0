@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 // Import react-router
-import { Router, Route} from 'react-router'
+import { Router, Route, browserHistory} from 'react-router'
 
 // Import redux stuff
 import {createStore, applyMiddleware} from 'redux';
@@ -12,9 +12,8 @@ import {Provider, connect} from 'react-redux';
 
 // Import my app-specific pages
 import {AppLayout} from './layout';
-import {LoginPage} from './pageLogin'
 import {UserDetails} from './pageUserDetails'
-import {UnsecuredPage} from './pageUnsecured'
+import {WelcomePage} from './pageWelcome'
 import {SecuredPage} from './pageSecured'
 import NotFound from './components/not-found';
 
@@ -26,14 +25,14 @@ const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 const store = createStoreWithMiddleware(reducer);
 
 // Try to make a higher level component to handle authenticated requests
-export function requireAuthentication(Component, LoginPage) {
+export function requireAuthentication(Component, DefaultComponent) {
   class AuthenticatedComponent extends React.Component {
     render() {
       return (
         <div>
-            {this.props.User.toJS().IsLoggedIn === true
+            {this.props.User.get("IsLoggedIn") === true
                 ? <Component {...this.props}/>
-                : <LoginPage {...this.props} />
+              : <DefaultComponent {...this.props} />
             }
         </div>
       )
@@ -45,10 +44,10 @@ export function requireAuthentication(Component, LoginPage) {
 // Define all the routes
 const routes = (
     <Route component={AppLayout}>
-      <Route name="unsecured" path="/unsecured" component={UnsecuredPage} />
-      <Route name="secured" path="/secured" component={requireAuthentication(SecuredPage, LoginPage)} />
-      <Route name="user_details" path="/user_details" component={requireAuthentication(UserDetails, LoginPage)} />
-      <Route name="default" path="/" component={UnsecuredPage} />
+      <Route name="welcome" path="/welcome" component={WelcomePage} />
+      <Route name="secured" path="/secured" component={requireAuthentication(SecuredPage, WelcomePage)} />
+      <Route name="user_details" path="/user_details" component={requireAuthentication(UserDetails, WelcomePage)} />
+      <Route name="default" path="/" component={WelcomePage} />
       <Route path="*" component={NotFound} />
     </Route>
   )

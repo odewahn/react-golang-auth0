@@ -11,9 +11,8 @@ const main = React.createClass({
         <Cell col={12}>
           <h1>User Profile</h1>
           This page should always require a login, and has all the info from the API:<br/>
-          <b>Username</b>: {this.props.User.get("Username")} <br/>
           <b>Email</b>: {this.props.User.get("Email")} <br/>
-          <b>API Key</b>: {this.props.User.get("APIKey")} <br/>
+          <b>Id</b>: {this.props.User.get("UserId")}<br/>
           <b>Auth Token</b>: {this.props.User.get("AuthToken")} <br/>
         </Cell>
     )
